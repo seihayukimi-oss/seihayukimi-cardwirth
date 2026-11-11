@@ -6,11 +6,11 @@
   "css": "",
   "pages": [],
   "design": {
-    "menu_pos": "right",
+    "menu_pos": "drawer",
     "page_img_mode": "cover",
     "menu_sticky": false,
     "header_sticky": false,
     "footer_text": "",
-    "page_img": "img-1794385214197.png"
+    "page_img": "img-1794385602911.png"
   }
 }
