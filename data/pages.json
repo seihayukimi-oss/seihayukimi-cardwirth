@@ -2,7 +2,15 @@
   "next_id": 1,
   "home": null,
   "menu": "",
-  "template": "",
+  "template": "<!doctype html>\n<html lang=\"ja\">\n<head>\n<%head%>\n</head>\n<body>\n<header class=\"bar\"><div class=\"in\"><a class=\"brand\" href=\"<%root%>\"><%site_title%></a><%nav%></div></header>\n<div class=\"wrap\">\n<main>\n<%content%>\n</main>\n<!--menu_area-->\n<input type=\"checkbox\" id=\"menu-toggle\" class=\"menu-toggle\"><label for=\"menu-toggle\" class=\"menu-btn\" aria-label=\"メニュー\">☰</label>\n<aside class=\"side\">\n<%menu%>\n</aside>\n<!--/menu_area-->\n</div>\n<footer class=\"foot\"><%footer_text%> <a class=\"adminlink\" href=\"<%root%>admin/\">管理ページ</a></footer>\n</body>\n</html>\n",
   "css": "",
-  "pages": []
+  "pages": [],
+  "design": {
+    "menu_pos": "right",
+    "page_img_mode": "cover",
+    "menu_sticky": false,
+    "header_sticky": false,
+    "footer_text": "",
+    "page_img": "img-1794385214197.png"
+  }
 }
