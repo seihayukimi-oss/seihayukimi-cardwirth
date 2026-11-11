@@ -7,10 +7,11 @@
   "pages": [],
   "design": {
     "menu_pos": "drawer",
-    "page_img_mode": "cover",
+    "page_img_mode": "repeat",
     "menu_sticky": false,
     "header_sticky": false,
     "footer_text": "",
-    "page_img": "img-1794385602911.png"
+    "header_img": "img-1794386976381.png",
+    "page_img": "img-1794386997139.png"
   }
 }
