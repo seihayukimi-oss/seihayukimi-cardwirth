@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex">
+<meta name="referrer" content="no-referrer">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; connect-src 'self' https://api.github.com; style-src 'self' 'unsafe-inline'; img-src 'self' https: data:; form-action 'none'">
+<title>管理ページ</title>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<div class="bar"><div class="in"><a class="brand" href="../">管理ページ</a><a class="nav" href="../" target="_blank" rel="noopener">サイトを見る</a><a class="nav" id="logout" href="#" hidden>キーを忘れさせる</a></div></div>
+<main>
+  <div id="msg"></div>
+  <section id="login" class="card">
+    <h2>作者様用のキーを入れる</h2>
+    <p class="note">このページは、この置き場の持ち主（作者様）だけが使えます。GitHub で作った「アクセストークン」をキーとして使います。キーは GitHub（api.github.com）にだけ送ります。</p>
+    <div class="field"><label for="repo">リポジトリ（アカウント名/リポジトリ名）</label><input type="text" id="repo" class="mono" autocomplete="off"></div>
+    <div class="field"><label for="token">キー（アクセストークン）</label><input type="password" id="token" autocomplete="off"></div>
+    <div class="field"><label><input type="checkbox" id="remember"> このタブを閉じるまで覚える</label></div>
+    <button type="button" class="btn primary" id="enter">開く</button>
+    <details id="howto"><summary>キーの作り方（はじめての方）</summary>
+      <p>キーは、この置き場の中身を書き換えるための「合いかぎ」です。GitHub の画面で作ります。</p>
+      <ol>
+        <li>GitHub にログインした状態で、下の「キーを作る画面を開く」を押す（名前・権限・期限が入った状態で開きます）</li>
+        <li>「Repository access」で「<strong>Only select repositories</strong>」を選び、「Select repositories」から<strong>この置き場のリポジトリだけ</strong>を選ぶ（ここだけは自分で選ぶ必要があります）</li>
+        <li>「Permissions」の「Contents」が「<strong>Read and write</strong>」になっていることを確かめる（ほかは変えない）</li>
+        <li>いちばん下の緑の「Generate token」を押し、出てきたキー（<span class="mono">github_pat_</span> で始まる文字）をコピーして、上の「キー」の欄に貼る</li>
+      </ol>
+      <p><a class="btn" id="tokenlink" target="_blank" rel="noopener" href="https://github.com/settings/personal-access-tokens/new">キーを作る画面を開く（GitHub）</a></p>
+      <p class="note">キーは二度と表示されないので、パスワードの管理アプリやメモ帳などに控えてください。人に見せないでください。期限（最初は1年）が切れたら、同じ手順で作り直します。</p>
+    </details>
+  </section>
+  <section id="app" hidden>
+    <div class="tabs" id="tabs"></div>
+    <div id="view"></div>
+    <p class="note">ここに書いた内容（タイトル・コメント・ページの文など）は、だれでも見られる形で GitHub に保存され、変更の履歴も残ります。「限定公開」「非公開」にしたものも、GitHub のリポジトリを直接見る人には見つけられます（本当に隠したいファイルには、DLキーを付けてください）。DLキーと、DLキーを付けたファイルの中身は保存されません（暗号化したものだけを置きます）。</p>
+  </section>
+</main>
+<script type="module" src="../assets/admin.js"></script>
+</body>
+</html>

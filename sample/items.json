@@ -1,0 +1,196 @@
+{
+  "next_id": 6,
+  "next_board": 3,
+  "site": {
+    "title": "CWシナリオ置き場（見本）",
+    "author": "テスト作者",
+    "url": "",
+    "note": "",
+    "tag_presets": [
+      "店シナ",
+      "読み物",
+      "短編",
+      "中編",
+      "長編",
+      "戦闘あり",
+      "戦闘無し",
+      "探索",
+      "1人用",
+      "6人用"
+    ]
+  },
+  "boards": [
+    {
+      "id": 1,
+      "title": "シナリオ置き場",
+      "note": "見本のアップローダーです。ファイルは、中身のない見本です（シナリオは入っていません）。",
+      "visibility": "public",
+      "key": "mihontana0000001"
+    },
+    {
+      "id": 2,
+      "title": "企画の棚（限定公開の見本）",
+      "note": "URL を知っている人だけが見られるアップローダーの見本です。一覧やメニューには出ません。",
+      "visibility": "unlisted",
+      "key": "mihonkikaku2026a"
+    }
+  ],
+  "items": [
+    {
+      "id": 1,
+      "board": 1,
+      "visibility": "inherit",
+      "key": "mihonsakuhin0001",
+      "share": true,
+      "title": "サンプル店",
+      "author": "テスト作者",
+      "comment": "【ver1.50以上】店シナリオの見本です。「ダウンロード」を押すと、中身のない見本の zip が落ちます。",
+      "version": "1.02",
+      "type": "scenario",
+      "format": "classic",
+      "compat": {},
+      "rating": "all",
+      "convert": "self",
+      "tags": [
+        "店シナ",
+        "短編",
+        "戦闘無し"
+      ],
+      "page": 2,
+      "file": {
+        "name": "サンプル店_ver1_02.zip",
+        "size": 291,
+        "sha256": "4344fdfa0f5dac55795748292ba9929e7f09661ed307de779664199784d96d83",
+        "rev": 1,
+        "enc": null
+      },
+      "created": "2026-11-01T03:00:00Z",
+      "updated": "2026-11-06T03:00:00Z"
+    },
+    {
+      "id": 2,
+      "board": 1,
+      "visibility": "inherit",
+      "key": "mihonsakuhin0002",
+      "share": false,
+      "title": "テスト冒険譚",
+      "author": "テスト作者",
+      "comment": "DLキーつきの作品の見本です。DLキーは「mihon-2026」です。",
+      "version": "2.0",
+      "type": "scenario",
+      "format": "classic",
+      "compat": {},
+      "rating": "all",
+      "convert": "self",
+      "tags": [
+        "探索",
+        "戦闘あり",
+        "Lv3以上"
+      ],
+      "page": null,
+      "file": {
+        "name": "テスト冒険譚_ver2_0.zip",
+        "size": 294,
+        "sha256": "4aa98b591acc8f5d259ce49b53bb133f24ea26b6f0da5aa5927d9d376ce71f91",
+        "rev": 1,
+        "enc": {
+          "v": 1,
+          "iter": 600000
+        }
+      },
+      "created": "2026-11-02T03:00:00Z",
+      "updated": "2026-11-07T03:00:00Z"
+    },
+    {
+      "id": 3,
+      "board": 1,
+      "visibility": "inherit",
+      "key": "mihonsakuhin0003",
+      "share": false,
+      "title": "デバッグ読みシナ",
+      "author": "テスト作者",
+      "comment": "Py仕様（WSN）の作品の見本です。対応エンジンに Py だけが出ます。",
+      "version": "1.00",
+      "type": "scenario",
+      "format": "wsn",
+      "compat": {},
+      "rating": "all",
+      "convert": "self",
+      "tags": [
+        "読み物",
+        "1人用"
+      ],
+      "page": null,
+      "file": {
+        "name": "デバッグ読みシナ.zip",
+        "size": 293,
+        "sha256": "c58fda55bf7826822450f1943155bbf8099fba38a5a08e742f6bde199df92f2b",
+        "rev": 1,
+        "enc": null
+      },
+      "created": "2026-11-03T03:00:00Z",
+      "updated": "2026-11-08T03:00:00Z"
+    },
+    {
+      "id": 4,
+      "board": 1,
+      "visibility": "inherit",
+      "key": "mihonsakuhin0004",
+      "share": false,
+      "title": "サンプルの光",
+      "author": "テスト作者",
+      "comment": "Next仕様の作品の見本です。Next は「確認済み」にしてあります。",
+      "version": "1.00",
+      "type": "scenario",
+      "format": "next",
+      "compat": {
+        "next": "verified"
+      },
+      "rating": "all",
+      "convert": "self",
+      "tags": [
+        "短編",
+        "戦闘あり"
+      ],
+      "page": null,
+      "file": {
+        "name": "サンプルの光_ver1_00.zip",
+        "size": 289,
+        "sha256": "25a3cb6e579c76dd1713da3a66ae4cbf20d76480f50cc594a608fbf71438b196",
+        "rev": 1,
+        "enc": null
+      },
+      "created": "2026-11-04T03:00:00Z",
+      "updated": "2026-11-09T03:00:00Z"
+    },
+    {
+      "id": 5,
+      "board": 2,
+      "visibility": "inherit",
+      "key": "mihonsakuhin0005",
+      "share": false,
+      "title": "企画のテスト配布",
+      "author": "テスト作者",
+      "comment": "限定公開のアップローダーに置いた作品の見本です。",
+      "version": "1.00",
+      "type": "scenario",
+      "format": "classic",
+      "compat": {},
+      "rating": "all",
+      "convert": "self",
+      "tags": [
+        "短編"
+      ],
+      "page": null,
+      "file": {
+        "name": "企画のテスト配布.zip",
+        "size": 297,
+        "sha256": "7c23c301ca84a82a0f46d2d2437656aaece91370ca75ace280ee577df8f5bba1",
+        "rev": 1,
+        "enc": null
+      },
+      "created": "2026-11-05T03:00:00Z",
+      "updated": "2026-11-10T03:00:00Z"
+    }
+  ]
+}

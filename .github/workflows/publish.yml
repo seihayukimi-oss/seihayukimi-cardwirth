@@ -1,0 +1,122 @@
+name: 公開する
+
+# 管理ページで保存したとき（main が変わったとき）と、1日1回（DL数の控えを更新）に動く
+on:
+  push:
+    branches: [main]
+  schedule:
+    - cron: "17 18 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: publish
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    env:
+      GH_TOKEN: ${{ github.token }}
+      GH_REPO: ${{ github.repository }}
+    steps:
+      - uses: actions/checkout@v4
+
+      # テンプレートから作った直後など、Pages の設定がまだのときは、やることを書いて止める（失敗の印は付けない）
+      - name: Pages の設定を確かめる
+        id: pages
+        run: |
+          OWNER=${GH_REPO%%/*}; NAME=${GH_REPO#*/}
+          SITE="https://${OWNER,,}.github.io/${NAME}/"
+          TYPE=$(gh api "repos/$GH_REPO/pages" --jq .build_type 2>/dev/null || true)
+          # ひな形のリポジトリ（テンプレートの印つき）では、見本のデータ（sample）で見本のサイトを作る
+          if [ "$(gh api "repos/$GH_REPO" --jq .is_template 2>/dev/null)" = "true" ] && [ -d sample ]; then
+            echo "data=sample" >> "$GITHUB_OUTPUT"; echo "media=sample/media" >> "$GITHUB_OUTPUT"; echo "inbox=sample/files" >> "$GITHUB_OUTPUT"
+          else
+            echo "data=data" >> "$GITHUB_OUTPUT"; echo "media=media" >> "$GITHUB_OUTPUT"; echo "inbox=_inbox" >> "$GITHUB_OUTPUT"
+          fi
+          if [ "$TYPE" = "workflow" ]; then
+            echo "ok=1" >> "$GITHUB_OUTPUT"
+            echo "site=$SITE" >> "$GITHUB_OUTPUT"
+          else
+            echo "ok=0" >> "$GITHUB_OUTPUT"
+            {
+              echo "## あと1つ、設定が必要です"
+              echo ""
+              echo "1. [Settings → Pages](https://github.com/$GH_REPO/settings/pages) を開き、「Build and deployment」の「Source」を **GitHub Actions** にしてください"
+              echo "2. [Actions の「公開する」](https://github.com/$GH_REPO/actions/workflows/publish.yml) を開き、右の「Run workflow」→ 緑の「Run workflow」を押してください"
+              echo ""
+              echo "数分で $SITE に置き場ができます。"
+            } >> "$GITHUB_STEP_SUMMARY"
+            echo "::notice title=あと1つ、設定が必要です::Settings → Pages の Source を「GitHub Actions」にしてから、もう一度「公開する」を動かしてください"
+          fi
+
+      - name: 受け取り箱（inbox ブランチ）を読む
+        if: steps.pages.outputs.ok == '1'
+        id: inbox
+        run: |
+          mkdir -p _inbox
+          SHA=$(git ls-remote origin refs/heads/inbox | cut -f1)
+          echo "sha=$SHA" >> "$GITHUB_OUTPUT"
+          if [ -n "$SHA" ]; then
+            git fetch --depth=1 origin "$SHA"
+            git archive FETCH_HEAD | tar -x -C _inbox
+          fi
+
+      - name: ファイルの置き場（Releases の files）を用意する
+        if: steps.pages.outputs.ok == '1'
+        run: |
+          gh release view files >/dev/null 2>&1 || gh release create files --latest=false \
+            --title "ファイルの置き場" \
+            --notes "サイトが使うファイルの置き場です。ここのファイルは手で消したり足したりしないでください（管理ページから操作します）。"
+          gh api "repos/$GH_REPO/releases/tags/files" > _release.json
+
+      - name: サイトを組み立てる
+        if: steps.pages.outputs.ok == '1'
+        run: node scripts/build.mjs --data "${{ steps.pages.outputs.data }}" --media "${{ steps.pages.outputs.media }}" --release _release.json --inbox "${{ steps.pages.outputs.inbox }}" --out _site --plan _plan.json
+
+      - name: ファイルを置く・取得する・消す
+        if: steps.pages.outputs.ok == '1'
+        run: |
+          jq -r '.upload[]' _plan.json | while read -r n; do gh release upload files "${{ steps.pages.outputs.inbox }}/$n" --clobber; done
+          jq -r '.counters[]' _plan.json | while read -r n; do printf 1 > "/tmp/$n"; gh release upload files "/tmp/$n" --clobber; done
+          jq -r '.download[] | [.name, .to] | @tsv' _plan.json | while IFS=$'\t' read -r n to; do
+            gh release download files -p "$n" -O "_site/$to" --clobber
+          done
+          jq -r '.delete[]' _plan.json | while read -r n; do gh release delete-asset files "$n" -y; done
+
+      - uses: actions/upload-pages-artifact@v3
+        if: steps.pages.outputs.ok == '1'
+        with:
+          path: _site
+
+      - name: 公開する
+        id: deploy
+        if: steps.pages.outputs.ok == '1'
+        uses: actions/deploy-pages@v4
+
+      - name: できあがりを知らせる
+        if: steps.pages.outputs.ok == '1'
+        run: |
+          {
+            echo "## 公開しました"
+            echo ""
+            echo "- サイト：${{ steps.pages.outputs.site }}"
+            echo "- 管理ページ：${{ steps.pages.outputs.site }}admin/"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: 受け取り箱を空にする
+        if: steps.pages.outputs.ok == '1' && steps.inbox.outputs.sha != ''
+        run: |
+          NOW=$(git ls-remote origin refs/heads/inbox | cut -f1)
+          # 作業のあいだに新しいファイルが届いていたら、消さずに次の回にまかせる
+          if [ "$NOW" = "${{ steps.inbox.outputs.sha }}" ]; then
+            gh api -X DELETE "repos/$GH_REPO/git/refs/heads/inbox"
+          fi
